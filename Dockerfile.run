@@ -4,5 +4,4 @@ COPY tcpproxy /bin/tcpproxy
 
 EXPOSE 8001
 
-# ENTRYPOINT ["/bin/tcpproxy"]
-CMD ["/bin/tcpproxy"]
+ENTRYPOINT ["/bin/tcpproxy"]

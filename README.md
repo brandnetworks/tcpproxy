@@ -42,6 +42,12 @@ Run it as follows:
 
 Debug can be enabled with the `--debug <level>` where `level` is an integer in the range `0...2`. Where 0 is no logging and 2 is maximum logging.
 
+## Runnit it from docker
+
+## Running
+
+    docker brandnetworks/tcpproxy --connections 8002:example.com:5432
+
 ### Monitoring it
 
 The tcpproxy exposes a /status HTTP endpoint on STATUS_ADDRESS (8001 in the example above).
@@ -52,3 +58,6 @@ It also exposes a `/connections` HTTP endpoint which returns a JSON blob with th
 
 The project includes a Dockerfile, allowing it to be built as a Docker image for deployment.
 
+## Building
+
+    docker build -t builder . && docker run builder | docker build -t eip-associate -
