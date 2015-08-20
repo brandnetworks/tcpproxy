@@ -130,6 +130,9 @@ func main() {
 
 	tcpBackend := func(proxyInstance *proxy.Proxy) {
 		proxy.RunTcpProxy(logLevel, proxyInstance.CreateChannel, proxyInstance.KillChannel, func() {
+			if logLevel > 0 {
+				log.Println("Initialised Proxy")
+			}
 			mux := web.InitialiseEndpoints(logLevel, *args.proxyName, proxyInstance)
 			http.ListenAndServe(*args.htmlEndpointBind, mux)
 		})

@@ -51,7 +51,11 @@ func (d *ElasticacheBackend) GetProxyConfigurations() ([]backends.ConnectionConf
 
 			backend.Name = *cluster.CacheClusterId + "::" + *node.CacheNodeId
 
-			id, _ := strconv.Atoi(*node.CacheNodeId)
+			id, err := strconv.Atoi(*node.CacheNodeId)
+
+			if err != nil {
+				return nil, err
+			}
 
 			pollResults[id] = *backend
 			nodeIDs = append(nodeIDs, id)

@@ -1,7 +1,6 @@
 package proxy
 
 import (
-	"fmt"
 	"time"
 	"github.com/brandnetworks/tcpproxy/backends"
 	"log"
@@ -70,12 +69,12 @@ func diffProxies(logLevel int, newProxyList []backends.ConnectionConfig, live ma
 
 	if logLevel > 0 {
 		if logLevel > 1 {
-			fmt.Println("Connections", newProxyList)
+			log.Println("Connections", newProxyList)
 		}
 
-		fmt.Println("Retain", toRetain)
-		fmt.Println("Create", toCreate)
-		fmt.Println("Kill  ", toKill)
+		log.Println("Retain", toRetain)
+		log.Println("Create", toCreate)
+		log.Println("Kill  ", toKill)
 	}
 
 	return toCreate, toKill, newLive, nil
