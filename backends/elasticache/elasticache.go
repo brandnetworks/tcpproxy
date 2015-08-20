@@ -10,10 +10,10 @@ import (
 )
 
 
-func CreateElasticacheBackend(cacheClusterID string, localPort int, awsConfig *aws.Config) *ElasticacheBackend {
+func CreateElasticacheBackend(cacheClusterId string, localPort int, awsConfig *aws.Config) *ElasticacheBackend {
 	return &ElasticacheBackend {
 		localPort: strconv.Itoa(localPort),
-		cacheClusterID: cacheClusterID,
+		cacheClusterID: cacheClusterId,
 		elasticache: elasticache.New(awsConfig),
 	}
 }
@@ -28,7 +28,7 @@ func (d *ElasticacheBackend) GetProxyConfigurations() ([]backends.ConnectionConf
 
 	// Paging shouldn't be a concern, as only 0 or 1 clusters should be returned by this call.
 	clusters, err := d.elasticache.DescribeCacheClusters(&elasticache.DescribeCacheClustersInput{
-		CacheClusterID:    aws.String(d.cacheClusterID),
+		CacheClusterId:    aws.String(d.cacheClusterID),
 		MaxRecords:        aws.Int64(100),
 		ShowCacheNodeInfo: aws.Bool(true),
 	})
@@ -49,9 +49,9 @@ func (d *ElasticacheBackend) GetProxyConfigurations() ([]backends.ConnectionConf
 				return nil, err
 			}
 
-			backend.Name = *cluster.CacheClusterID + "::" + *node.CacheNodeID
+			backend.Name = *cluster.CacheClusterId + "::" + *node.CacheNodeId
 
-			id, _ := strconv.Atoi(*node.CacheNodeID)
+			id, _ := strconv.Atoi(*node.CacheNodeId)
 
 			pollResults[id] = *backend
 			nodeIDs = append(nodeIDs, id)
