@@ -36,9 +36,9 @@ local port on which the proxy operates.
 
 Run it as follows:
 
-    tcpproxy --connections  8002:realtime-pg.cicgpovfxgzj.us-east-1.rds.amazonaws.com:5432
-    tcpproxy --backend dynamodb --proxy realtime
-    tcpproxy --backend elasticache --elasticache-cluster-id docker-registry --elasticache-port 5000
+    tcpproxy --connections 8002:example.com:5432
+    tcpproxy --backend dynamodb --proxy test
+    tcpproxy --backend elasticache --elasticache-cluster-id my-redis-cluster --elasticache-port 6379
 
 Debug can be enabled with the `--debug <level>` where `level` is an integer in the range `0...2`. Where 0 is no logging and 2 is maximum logging.
 
@@ -52,21 +52,3 @@ It also exposes a `/connections` HTTP endpoint which returns a JSON blob with th
 
 The project includes a Dockerfile, allowing it to be built as a Docker image for deployment.
 
-To build and release the image to a private registry:
-
-
-    #Build the image (with an appropriate tag):
-    #
-    # N.B The tag name must be in the format of {{ private_index_address }}/tcpproxy
-    #
-    $ docker build -t {{ private_index_address}}/tcproxy .
-    e.g.
-    $ docker build -t ec2-54-210-140-163.compute-1.amazonaws.com:5000/tcpproxy-config
-    
-    #Push the image to the private registry
-    $ docker push {{ image_tag }}
-    e.g.
-    $ docker push ec2-54-210-140-163.compute-1.amazonaws.com:5000/tcpproxy-config
-    
-    
-    
