@@ -7,33 +7,41 @@ import (
 	"sort"
 	"strconv"
 	"fmt"
+	"log"
 )
 
 
-func CreateElasticacheBackend(cacheClusterId string, localPort int, awsConfig *aws.Config) *ElasticacheBackend {
+func CreateElasticacheBackend(logLevel int, cacheClusterId string, localPort int, awsConfig *aws.Config) *ElasticacheBackend {
 	return &ElasticacheBackend {
+		logLevel: logLevel,
 		localPort: strconv.Itoa(localPort),
-		cacheClusterID: cacheClusterId,
+		cacheClusterId: cacheClusterId,
 		elasticache: elasticache.New(awsConfig),
 	}
 }
 
 type ElasticacheBackend struct {
+	logLevel int
 	localPort string
-	cacheClusterID string
+	cacheClusterId string
 	elasticache *elasticache.ElastiCache
 }
 
 func (d *ElasticacheBackend) GetProxyConfigurations() ([]backends.ConnectionConfig, error) {
 
+	if d.logLevel > 0 {
+		log.Println("Describing cluster", d.cacheClusterId)
+	}
+
 	// Paging shouldn't be a concern, as only 0 or 1 clusters should be returned by this call.
 	clusters, err := d.elasticache.DescribeCacheClusters(&elasticache.DescribeCacheClustersInput{
-		CacheClusterId:    aws.String(d.cacheClusterID),
+		CacheClusterId:    aws.String(d.cacheClusterId),
 		MaxRecords:        aws.Int64(100),
 		ShowCacheNodeInfo: aws.Bool(true),
 	})
 
 	if err != nil {
+		log.Println("Error describing cluster", d.cacheClusterId, err)
 		return nil, err
 	}
 
@@ -60,6 +68,10 @@ func (d *ElasticacheBackend) GetProxyConfigurations() ([]backends.ConnectionConf
 			pollResults[id] = *backend
 			nodeIDs = append(nodeIDs, id)
 		}
+	}
+
+	if d.logLevel > 0 {
+		log.Println("Found", len(nodeIDs), "nodeIDs")
 	}
 
 	sort.Sort(sort.IntSlice(nodeIDs))

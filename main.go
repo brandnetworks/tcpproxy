@@ -69,7 +69,7 @@ func GetBackend(args TcpProxyArgs) (backends.ReadOnly, error) {
 
 			awsConfig := &aws.Config{Region: aws.String(*args.awsRegion), MaxRetries: aws.Int(15)}
 
-			backend := elasticache.CreateElasticacheBackend(*args.elasticacheClusterID, *args.elasticacheClusterLocalPort, awsConfig)
+			backend := elasticache.CreateElasticacheBackend(*args.logLevel, *args.elasticacheClusterID, *args.elasticacheClusterLocalPort, awsConfig)
 
 			return backend, nil
 

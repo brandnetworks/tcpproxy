@@ -115,6 +115,10 @@ func (c *Proxy) UpdateConnections(logLevel int) error {
 
 func (c *Proxy) Run(logLevel int, callback func()) error {
 
+	if logLevel > 0 {
+		log.Println("Initialising connections")
+	}
+
 	err := c.UpdateConnections(logLevel)
 	if err != nil {
 		return err
