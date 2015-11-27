@@ -2,6 +2,7 @@ package dynamodb
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/brandnetworks/tcpproxy/backends"
 )
@@ -55,7 +56,7 @@ func CreateDynamoDbBackend(proxy_name string, tablename string, awsConfig *aws.C
 	return &DynamoDbBackend{
 		proxy_name: proxy_name,
 		tablename: tablename,
-		database: dynamodb.New(awsConfig),
+		database: dynamodb.New(session.New(), awsConfig),
 	}
 }
 

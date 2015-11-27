@@ -2,6 +2,7 @@ package elasticache
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/elasticache"
 	"github.com/brandnetworks/tcpproxy/backends"
 	"sort"
@@ -16,7 +17,7 @@ func CreateElasticacheBackend(logLevel int, cacheClusterId string, localPort int
 		logLevel: logLevel,
 		localPort: strconv.Itoa(localPort),
 		cacheClusterId: cacheClusterId,
-		elasticache: elasticache.New(awsConfig),
+		elasticache: elasticache.New(session.New(), awsConfig),
 	}
 }
 
