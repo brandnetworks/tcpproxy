@@ -42,7 +42,7 @@ Run it as follows:
 
 Debug can be enabled with the `--debug <level>` where `level` is an integer in the range `0...2`. Where 0 is no logging and 2 is maximum logging.
 
-## Runnit it from docker
+## Run it from docker
 
 ## Running
 
